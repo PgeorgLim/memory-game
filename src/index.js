@@ -102,7 +102,8 @@ class MainBoard extends React.Component{
 
           //compare previous val with the current
           // if they are equal => correct combo found => style squares accordingly
-          if (val === this.state.previousVal){
+          // and not if user clicks on the same square
+          if ( (val === this.state.previousVal) && (this.state.previousSquarePos !== i)){
                 completed[i] = val;
                 completed[this.state.previousSquarePos] = this.state.previousVal;
 
