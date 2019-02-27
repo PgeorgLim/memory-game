@@ -89,9 +89,6 @@ class MainBoard extends React.Component{
       }       
 
       handleClick(val,i) {
-          //console.log(`val is ${val} , prev val: ${this.state.previousVal}`);
-          //console.log(`square Clicked is ${i} , prev square clicked: ${this.state.previousSquarePos}`);
-
 
           let completed = this.state.completedSquares.slice();
           const classes = this.state.classesToAssign.map( (el,i) =>{
@@ -178,8 +175,9 @@ function LevelScore(props){
     const [moves, squares] = [props.totalClicks, props.totalSquares];
 
     if ( !props.completedSquares.includes(null) ){
-        score = Math.ceil( (squares / moves) * 100 ) + ' /100';  //lets say moves are 16, total squares are 16
-                                          // (16 / 16) * 100 = 100% => best score. 
+        score = Math.ceil( (squares / moves) * 100 ) + ' /100';  
+        //lets say moves are 16, total squares are 16
+        // (16 / 16) * 100 = 100% => best score. 
     }
 
 
