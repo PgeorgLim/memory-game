@@ -1,0 +1,71 @@
+*{
+  box-sizing: border-box;
+}
+
+body{
+    background: linear-gradient(to right,rgb(199, 11, 11) , white);
+    box-sizing: inherit;
+}
+
+.game-section{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;    
+}
+
+.board-section{   
+    width: 100%;
+    height: 100%;        
+}
+
+.square{
+    float: left;
+    width: 25%;
+    height: 25%;
+    border: 1px solid brown;
+
+}
+
+.squareBtn, .squareBtn:active, .squareBtn:visited{
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; 
+    border: none;
+    font-size: 18px;
+    color: white;
+}
+
+.squareBtn-active{
+    color: rgb(199, 11, 11);
+}
+
+.squareBtn-completed{
+    background-color: rgb(168, 248, 175); 
+    color: black;
+    font-size: 22px;
+}
+
+.result-section{
+    width: 100%;
+    height: 100%; 
+
+    margin-top: 20px;
+    text-align: center;
+    font-size: 22px;
+    color: black;
+    font-weight: bold;     
+}
+
+.score-section{
+    text-align: right;
+    font-style: italic;
+    font-size: 22px;
+}
+
+.score{
+    color: #29a810;
+}
