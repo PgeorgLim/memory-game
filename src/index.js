@@ -19,16 +19,20 @@ class MainBoard extends React.Component{
       constructor(props) {
           super(props);
 
-          const totalSquares = 16;
+          const levelSquares = [8 , 16 , 20];
+          const currentLevel = 1;
 
           this.state = {
-            squares: this.generateBoardSquares(totalSquares),
-            completedSquares: Array(totalSquares).fill(null),
-            classesToAssign: Array(totalSquares).fill('squareBtn'),
+            squares: this.generateBoardSquares(levelSquares[0]),
+            completedSquares: Array(levelSquares[0]).fill(null),
+            classesToAssign: Array(levelSquares[0]).fill('squareBtn'),
             previousVal: null,
             previousSquarePos: null,
             totalClicks: 0,              
-            totalSquares
+            totalSquares : levelSquares[0],
+            currentLevel,
+            levelSquares,
+            gameEnded: false
           };
       }
 
@@ -126,15 +130,47 @@ class MainBoard extends React.Component{
           });  
 
       }
+
+      resetGame(){
+
+        let newNumOfSquares, newLevel, gameEnded;
+
+        if ( (this.state.currentLevel+1) <= this.state.levelSquares.length ){
+            // new Level
+            newNumOfSquares = this.state.levelSquares[this.state.currentLevel];
+            newLevel = this.state.currentLevel + 1;
+            gameEnded = false;
+        }
+        else{
+            //Game finished, complete reset
+            newNumOfSquares = this.state.levelSquares[0];
+            newLevel = 1;    
+            gameEnded = true; 
+        }
+
+        this.setState({
+          squares: this.generateBoardSquares(newNumOfSquares),
+          completedSquares: Array(newNumOfSquares).fill(null),
+          classesToAssign: Array(newNumOfSquares).fill('squareBtn'),
+          previousVal: null,
+          previousSquarePos: null,
+          totalClicks: 0,              
+          totalSquares: newNumOfSquares,
+          currentLevel: newLevel,
+          gameEnded
+        }); 
+
+      }
       
       render(){
 
-            const gameboard = this.state.squares.map( (el,i) =>{
-                let disableBtn = (this.state.completedSquares[i] !== null) ? true : false; 
-                return <div key={i} className="square">
-                          {this.renderSquareValue(el,i,this.state.classesToAssign[i],disableBtn)}
-                        </div>
-            });
+              const gameboard = this.state.squares.map( (el,i) =>{
+                  let disableBtn = (this.state.completedSquares[i] !== null) ? true : false; 
+                  return <div key={i} className="square">
+                            {this.renderSquareValue(el,i,this.state.classesToAssign[i],disableBtn)}
+                          </div>
+              });
+
 
             return (
               <div className="game-section">
@@ -148,6 +184,9 @@ class MainBoard extends React.Component{
                 </div>
                 <LevelResult 
                     completedSquares={this.state.completedSquares}
+                    currentLevel={this.state.currentLevel}
+                    levelSquares={this.state.levelSquares}
+                    onClickReset={() => this.resetGame()}
                 />
               </div>
             );
@@ -157,15 +196,31 @@ class MainBoard extends React.Component{
 function LevelResult(props){
 
   let result = '';
-  //check if player won the level (all total combos found)
+  let resetSection = '';
+
+  //check if player won the level (all total combos found) and if he won the game in general
   if ( !props.completedSquares.includes(null) ){
-      result = 'Congats!! You won the level';
+
+      if ( (props.currentLevel + 1) > props.levelSquares.length ){
+        resetSection = 
+          <div className="game-over-section">
+            <h2 className="result">Game Over <span className="won-msg">You won the game !!!</span></h2>
+            <button onClick={props.onClickReset} className="reset-btn"> Start New Game </button>
+          </div>;
+      }else{
+        result = 'Congats!! You won the level';
+        resetSection = <button onClick={props.onClickReset} className="reset-btn"> Next Level </button>;
+      }
+      
   }
+  
 
   return (
       <div className="result-section">
         <span className="result">{result}</span>
+        {resetSection}
       </div>
+
   );
 
 }
